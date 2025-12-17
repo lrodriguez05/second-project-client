@@ -1,8 +1,20 @@
+import { Routes, Route, Outlet } from "react-router";
+import Login from "./components/auth/login.jsx";
+import Register from "./components/auth/register.jsx";
+import Home from "./components/home/home.jsx";
+import Preview from "./components/home/home_components/preview.jsx";
+import ChatView from "./components/home/home_components/chat_view.jsx";
+
 function App() {
   return (
-    <>
-      <div>Hola Chat</div>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />}>
+        <Route index element={<Preview />} />
+        <Route path="chats/:id" element={<ChatView />} />
+      </Route>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
 
