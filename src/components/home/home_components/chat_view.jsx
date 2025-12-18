@@ -1,26 +1,47 @@
 import { EllipsisVertical, Search, Video } from "lucide-react";
 import MessageMapper from "./message_mapper.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { httpClient } from "../../../config/http_client";
 import { useParams } from "react-router";
+import { getSocket, initSocket } from "../../../config/socket.js";
 
 function ChatView() {
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const id = useParams().id;
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  useEffect(() => {
+    const socket = getSocket();
+
+    socket.on(`chat:${id}`, (newMessage) => {
+      console.log("Mensaje recibido:", newMessage);
+
+      setMessages((prev) => [...prev, newMessage]);
+    });
+
+    return () => {
+      socket.off(`chat:${id}`);
+    };
+  }, [id]);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await httpClient.get("/chat/chats/" + id + "/messages");
+      setMessages(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await httpClient.post(
-        "/chat/chats/" + id + "/messages",
-        {
-          content: message,
-        }
-      );
-      setMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+    getSocket().emit("message", { message, chatId: id });
+    setMessage("");
   };
 
   return (
@@ -43,7 +64,7 @@ function ChatView() {
       </header>
 
       <main className="flex-1 overflow-y-auto p-4 min-h-0">
-        <MessageMapper />
+        <MessageMapper toMap={messages} />
       </main>
 
       <div className="flex items-center bg-white border-t border-gray-300 p-3">
