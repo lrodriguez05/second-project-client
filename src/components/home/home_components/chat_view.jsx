@@ -1,6 +1,6 @@
 import { EllipsisVertical, Search, Video } from "lucide-react";
 import MessageMapper from "./message_mapper.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { httpClient } from "../../../config/http_client";
 import { useParams } from "react-router";
 import { getSocket, initSocket } from "../../../config/socket.js";
@@ -9,22 +9,25 @@ function ChatView() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const id = useParams().id;
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     fetchMessages();
   }, []);
 
   useEffect(() => {
-    const socket = getSocket();
-
-    socket.on(`chat:${id}`, (newMessage) => {
+    getSocket().on(`chat:${id}`, (newMessage) => {
       console.log("Mensaje recibido:", newMessage);
 
       setMessages((prev) => [...prev, newMessage]);
     });
 
     return () => {
-      socket.off(`chat:${id}`);
+      getSocket().off(`chat:${id}`);
     };
   }, [id]);
 
@@ -65,6 +68,7 @@ function ChatView() {
 
       <main className="flex-1 overflow-y-auto p-4 min-h-0">
         <MessageMapper toMap={messages} />
+        <div ref={bottomRef} />
       </main>
 
       <div className="flex items-center bg-white border-t border-gray-300 p-3">

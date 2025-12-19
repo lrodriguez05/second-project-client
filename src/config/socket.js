@@ -17,8 +17,9 @@ export function initSocket(token) {
 }
 
 export function getSocket() {
+  const token = localStorage.getItem("token");
   if (!socket) {
-    throw new Error("Socket not initialized");
+    initSocket(token);
   }
   return socket;
 }

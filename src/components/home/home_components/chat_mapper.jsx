@@ -7,10 +7,6 @@ function ChatMapper() {
   const maxLength = 20;
   const { chats } = useContext(ChatContext);
 
-  // useEffect(() => {
-  //   fetchChats();
-  // }, []);
-
   return (
     <section className="flex flex-col gap-1">
       {chats.map((chat) => (
