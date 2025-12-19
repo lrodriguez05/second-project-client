@@ -8,6 +8,7 @@ import { getSocket, initSocket } from "../../../config/socket.js";
 function ChatView() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [otherUser, setOtherUser] = useState(null);
   const id = useParams().id;
   const bottomRef = useRef(null);
 
@@ -17,7 +18,8 @@ function ChatView() {
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+    fetchOtherUser();
+  }, [id]);
 
   useEffect(() => {
     getSocket().on(`chat:${id}`, (newMessage) => {
@@ -33,8 +35,18 @@ function ChatView() {
 
   const fetchMessages = async () => {
     try {
-      const response = await httpClient.get("/chat/chats/" + id + "/messages");
+      const response = await httpClient.get(`/chat/chats/${id}/messages`);
       setMessages(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
+  const fetchOtherUser = async () => {
+    try {
+      const response = await httpClient.get(`chat/chats/${id}/otherUser`);
+      setOtherUser(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -47,16 +59,19 @@ function ChatView() {
     setMessage("");
   };
 
+  const counter = useRef();
+  const [status, setStatus] = useState("online");
+
   return (
-    <section className="flex flex-col h-full min-h-0 bg-gray-100">
+    <section ref={counter} className="flex flex-col h-full min-h-0 bg-gray-100">
       <header className="flex justify-between items-center bg-white px-6 py-4 border-b border-gray-300">
         <div className="flex items-center gap-5">
           <img
-            src="https://static8.depositphotos.com/1016676/815/i/450/depositphotos_8153880-stock-photo-smiling-cow.jpg"
+            src={otherUser?.other_user_picture}
             alt="Foto contacto"
             className="w-12 h-12 rounded-full"
           />
-          <h1 className="font-semibold">Nombre del contacto</h1>
+          <h1 className="font-semibold">{otherUser?.other_username}</h1>
         </div>
 
         <div className="flex items-center gap-5">
