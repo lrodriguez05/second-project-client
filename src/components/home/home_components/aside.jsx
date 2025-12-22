@@ -24,7 +24,7 @@ function Aside() {
   };
   return (
     <ChatContext.Provider value={{ chats, fetchChats }}>
-      <section className="flex flex-col justify-start border-r bg-white border-gray-300 h-screen min-w-90">
+      <section className="flex flex-col justify-start border-r bg-white border-gray-300 h-screen min-w-90 lg:w-110">
         <header className="flex justify-between items-center px-4 py-3">
           <span className="font-bold text-xl">TestChat</span>
           <div className="flex gap-1">

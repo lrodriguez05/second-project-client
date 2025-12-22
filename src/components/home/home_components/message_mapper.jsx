@@ -8,7 +8,7 @@ function MessageMapper({ toMap }) {
       {toMap.map((message) => (
         <div
           key={message.message_id}
-          className={`p-4 rounded-2xl mb-3 max-w-[60%] flex flex-col ${
+          className={`p-4 rounded-2xl mb-3 max-w-[60%] sm:max-w-[80%] md:max-w-[70%] lg:max-w-[60%] flex flex-col ${
             message.sender_username === myUser
               ? "bg-blue-500 text-white ml-auto"
               : "bg-white text-black mr-auto"

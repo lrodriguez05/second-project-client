@@ -15,6 +15,7 @@ function NewChat() {
   };
 
   const handleCreateChat = async () => {
+    if (!selectedUser) return;
     try {
       const response = await httpClient.post("/chat/chats", {
         otherUsername: selectedUser,
