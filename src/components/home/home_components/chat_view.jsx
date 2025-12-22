@@ -60,7 +60,7 @@ function ChatView() {
   };
 
   return (
-    <section className="flex flex-col h-full min-h-0 bg-gray-100">
+    <section className="flex flex-col h-full min-h-0 bg-gray-100 border-b border-gray-300">
       <header className="flex justify-between items-center bg-white px-6 py-4 border-b border-gray-300">
         <div className="flex items-center gap-5">
           <img

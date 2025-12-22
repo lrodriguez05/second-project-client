@@ -21,10 +21,10 @@ function Home() {
   }, []);
 
   return (
-    <section className="grid grid-cols-[auto_auto_1fr] h-screen bg-slate-100">
+    <section className="grid grid-cols-[auto_auto_1fr] h-screen bg-slate-100 border border-gray-300">
       <SideMenu />
       <Aside />
-      <main className="bg-gray-100 overflow-hidden">
+      <main className="bg-gray-100 overflow-hidden w-full min-w-100">
         <Outlet />
       </main>
     </section>

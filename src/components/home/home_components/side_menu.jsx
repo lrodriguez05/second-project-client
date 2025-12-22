@@ -10,7 +10,7 @@ import { Link } from "react-router";
 
 function SideMenu() {
   return (
-    <section>
+    <section className="">
       <div className="flex flex-col justify-between h-screen p-2 bg-white shadow-lg border-r border-gray-300">
         <Link
           to={"/chats"}
