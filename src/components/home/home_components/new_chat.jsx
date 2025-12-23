@@ -38,12 +38,16 @@ function NewChat() {
         okText="Iniciar chat"
         onOk={handleCreateChat}
         cancelText="Cancelar"
+        destroyOnHidden
       >
         <p className="text-xl font-semibold text-center">
           Selecciona un usuario para iniciar un chat
         </p>
         <div className="border rounded-lg border-gray-300 bg-gray-100 overflow-hidden overflow-y-scroll h-95">
-          <UserMapper onSelectedUser={handleSelectedUser} />
+          <UserMapper
+            onSelectedUser={handleSelectedUser}
+            isModalOpen={isModalOpen}
+          />
         </div>
       </Modal>
     </>

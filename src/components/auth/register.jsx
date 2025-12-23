@@ -11,6 +11,7 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError(null);
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
       return;
@@ -18,15 +19,19 @@ function Register() {
     setLoading(true);
     try {
       const data = await register(username, password);
+
+      if (data.error) {
+        setError(data.message);
+        return;
+      }
+
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
         navigate("/");
-      } else {
-        setError(data.message);
       }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }

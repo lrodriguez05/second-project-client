@@ -13,6 +13,16 @@ function ChatView() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
+    if (!id) return;
+
+    getSocket().emit("join-chat", id);
+
+    return () => {
+      getSocket().emit("leave-chat", id);
+    };
+  }, [id]);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 

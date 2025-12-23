@@ -10,14 +10,19 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       const data = await login(username, password);
+
+      if (data.error) {
+        setError(data.message);
+        return;
+      }
+
       if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
         navigate("/");
-      } else {
-        setError(data.message);
       }
     } catch (err) {
       setError(err.message);

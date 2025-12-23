@@ -9,7 +9,10 @@ export const login = async (username, password) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "Error de autenticación",
+    };
   }
 };
 
@@ -23,10 +26,11 @@ export const register = async (username, password) => {
     if (response.status === 200) {
       const autoLogin = await login(username, password);
       return autoLogin;
-    } else {
-      return response.data;
     }
   } catch (error) {
-    console.log(error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "Error de autenticación",
+    };
   }
 };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { httpClient } from "../../../config/http_client";
 
-function UserMapper({ onSelectedUser }) {
+function UserMapper({ onSelectedUser, isModalOpen }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [searchUser, setSearchUser] = useState("");
@@ -9,6 +9,8 @@ function UserMapper({ onSelectedUser }) {
     "flex gap-3 items-center hover:bg-gray-200 p-3 rounded-lg cursor-pointer";
   const activeClass =
     "flex gap-3 items-center bg-gray-200 p-3 rounded-lg cursor-pointer";
+
+  console.log(isModalOpen);
 
   const fetchUsers = async () => {
     try {
@@ -30,7 +32,8 @@ function UserMapper({ onSelectedUser }) {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+    // console.log(isModalOpen);
+  }, [isModalOpen]);
 
   return (
     <div>
