@@ -10,13 +10,6 @@ export const ChatContext = createContext();
 
 function Aside() {
   const [chats, setChats] = useState([]);
-  const { id } = useParams();
-
-  useEffect(() => {
-    getSocket().on(`chat:${id}`, (newMessage) => {
-      console.log("Mensaje recibido:", newMessage);
-    });
-  });
 
   useEffect(() => {
     const socket = getSocket();
