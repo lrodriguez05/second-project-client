@@ -3,11 +3,48 @@ import ChatMapper from "./chat_mapper.jsx";
 import NewChat from "./new_chat.jsx";
 import { useState, createContext, useEffect } from "react";
 import { httpClient } from "../../../config/http_client";
+import { getSocket } from "../../../config/socket.js";
+import { useParams } from "react-router";
 
 export const ChatContext = createContext();
 
 function Aside() {
   const [chats, setChats] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    getSocket().on(`chat:${id}`, (newMessage) => {
+      console.log("Mensaje recibido:", newMessage);
+    });
+  });
+
+  useEffect(() => {
+    const socket = getSocket();
+
+    socket.onAny((event, msg) => {
+      if (!event.startsWith("chat:")) return;
+
+      setChats((chats) =>
+        chats
+          .map((chat) =>
+            String(chat.chat_id) === String(msg.chat_id)
+              ? {
+                  ...chat,
+                  last_message: msg.content,
+                  last_message_at: msg.created_at,
+                }
+              : chat
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.last_message_at || 0) -
+              new Date(a.last_message_at || 0)
+          )
+      );
+    });
+
+    return () => socket.offAny();
+  }, []);
 
   useEffect(() => {
     fetchChats();
