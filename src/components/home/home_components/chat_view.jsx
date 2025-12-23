@@ -1,7 +1,7 @@
 import { EllipsisVertical, Search, Video } from "lucide-react";
 import MessageMapper from "./message_mapper.jsx";
 import { useState, useEffect, useRef } from "react";
-import { httpClient } from "../../../config/http_client";
+import { httpClient } from "../../../config/http_client.js";
 import { useParams } from "react-router";
 import { getSocket, initSocket } from "../../../config/socket.js";
 
