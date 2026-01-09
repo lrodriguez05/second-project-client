@@ -10,6 +10,13 @@ export const httpClient = axios.create({
   },
 });
 
+export const httpClientAi = axios.create({
+  baseURL: "http://localhost:5555",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 httpClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
